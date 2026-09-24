@@ -1,0 +1,1218 @@
+<!doctype html>
+<html lang="es" class="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Infografía Interactiva: Formatos de Audio</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            orbitron: ["Orbitron", "sans-serif"],
+                            rajdhani: ["Rajdhani", "sans-serif"],
+                        },
+                        colors: {
+                            cyber: {
+                                bg: "#080b14",
+                                card: "#0f172a",
+                                border: "#1e293b",
+                                cyan: "#00f0ff",
+                                purple: "#7000ff",
+                                pink: "#ff007f",
+                                glow: "#00f0ff44",
+                            },
+                        },
+                        boxShadow: {
+                            "neon-cyan": "0 0 15px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.1)",
+                            "neon-purple": "0 0 15px rgba(112, 0, 255, 0.4), inset 0 0 15px rgba(112, 0, 255, 0.1)",
+                            "neon-pink": "0 0 15px rgba(255, 0, 127, 0.4), inset 0 0 15px rgba(255, 0, 127, 0.1)",
+                        },
+                    },
+                },
+            };
+        </script>
+
+        <style>
+            body {
+                min-height: 100vh;
+                background-image:
+                    radial-gradient(circle at 50% 0%, rgba(112, 0, 255, 0.15) 0%, transparent 70%),
+                    radial-gradient(circle at 0% 100%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
+                    linear-gradient(to bottom, rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.95)),
+                    repeating-linear-gradient(
+                        0deg,
+                        transparent,
+                        transparent 2px,
+                        rgba(0, 240, 255, 0.02) 2px,
+                        rgba(0, 240, 255, 0.02) 4px
+                    );
+                background-color: #05070f;
+                color: #e2e8f0;
+                font-family: "Rajdhani", sans-serif;
+            }
+
+            /* HUD tech lines background */
+            .hud-grid {
+                background-image:
+                    linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+                background-size: 40px 40px;
+            }
+
+            /* Custom Scrollbar */
+            ::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #080b14;
+            }
+            ::-webkit-scrollbar-thumb {
+                border-radius: 3px;
+                background: #00f0ff55;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: #00f0ff;
+            }
+
+            .glow-text-cyan {
+                text-shadow:
+                    0 0 10px rgba(0, 240, 255, 0.7),
+                    0 0 20px rgba(0, 240, 255, 0.4);
+            }
+
+            .glow-text-purple {
+                text-shadow:
+                    0 0 10px rgba(112, 0, 255, 0.7),
+                    0 0 20px rgba(112, 0, 255, 0.4);
+            }
+
+            .hud-card {
+                border: 1px solid rgba(0, 240, 255, 0.2);
+                backdrop-filter: blur(12px);
+                background: rgba(15, 23, 42, 0.65);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .hud-card:hover {
+                transform: translateY(-2px);
+                border-color: rgba(0, 240, 255, 0.6);
+                box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+            }
+
+            .hud-card-purple {
+                border-color: rgba(112, 0, 255, 0.3);
+            }
+            .hud-card-purple:hover {
+                border-color: rgba(112, 0, 255, 0.7);
+                box-shadow: 0 0 20px rgba(112, 0, 255, 0.3);
+            }
+
+            .corner-border {
+                position: relative;
+            }
+            .corner-border::before {
+                position: absolute;
+                top: -1px;
+                left: -1px;
+                width: 8px;
+                height: 8px;
+                border-top: 2px solid #00f0ff;
+                border-left: 2px solid #00f0ff;
+                content: "";
+            }
+            .corner-border::after {
+                position: absolute;
+                right: -1px;
+                bottom: -1px;
+                width: 8px;
+                height: 8px;
+                border-right: 2px solid #00f0ff;
+                border-bottom: 2px solid #00f0ff;
+                content: "";
+            }
+
+            @keyframes scanline {
+                0% {
+                    transform: translateY(-100%);
+                }
+                100% {
+                    transform: translateY(1000%);
+                }
+            }
+            .scanline-effect {
+                animation: scanline 8s linear infinite;
+            }
+        </style>
+    </head>
+    <body class="hud-grid relative overflow-x-hidden p-3 md:p-6 text-slate-200">
+        <header class="max-w-7xl mx-auto mb-8 relative z-10">
+            <!-- Top HUD Row with Info & Main Title -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center mb-6">
+                <!-- Left Corner: Datos del Alumno -->
+                <div class="lg:col-span-3 order-2 lg:order-1">
+                    <div class="hud-card p-3 rounded-lg border-slate-700/60 opacity-90 hover:opacity-100 text-xs">
+                        <div
+                            class="flex items-center gap-2 mb-2 pb-1 border-b border-cyan-500/30 text-cyan-400 font-orbitron font-semibold"
+                        >
+                            <i class="fa-solid fa-user-gear"></i>
+                            <span>DATOS DEL ALUMNO</span>
+                        </div>
+                        <div class="space-y-1 text-slate-300">
+                            <p class="flex justify-between">
+                                <span class="text-slate-500">Nombre:</span>
+                                <span class="font-medium text-slate-200" contenteditable="true">Estudiante</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="text-slate-500">Matrícula:</span>
+                                <span class="font-medium text-cyan-300" contenteditable="true">#AUD-2026-99</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="text-slate-500">Curso:</span>
+                                <span class="font-medium text-slate-200" contenteditable="true">Sonido Digital II</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Central Title Block -->
+                <div class="lg:col-span-6 text-center order-1 lg:order-2 my-2 lg:my-0">
+                    <div class="inline-block relative">
+                        <div
+                            class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"
+                        ></div>
+                        <div
+                            class="relative px-6 py-3 bg-slate-950/80 border border-cyan-500/40 rounded-xl backdrop-blur-md"
+                        >
+                            <h1
+                                class="font-orbitron font-black text-2xl md:text-4xl lg:text-5xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-200 to-purple-400 glow-text-cyan"
+                            >
+                                FORMATOS DE AUDIO
+                            </h1>
+                            <p class="text-xs md:text-sm font-rajdhani tracking-widest text-cyan-300 uppercase mt-1">
+                                ESQUEMA INTERACTIVO DE CLASIFICACIÓN TÉCNICA
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Corner: Datos de la Presentación -->
+                <div class="lg:col-span-3 order-3">
+                    <div
+                        class="hud-card hud-card-purple p-3 rounded-lg border-slate-700/60 opacity-90 hover:opacity-100 text-xs"
+                    >
+                        <div
+                            class="flex items-center gap-2 mb-2 pb-1 border-b border-purple-500/30 text-purple-400 font-orbitron font-semibold"
+                        >
+                            <i class="fa-solid fa-file-waveform"></i>
+                            <span>PRESENTACIÓN</span>
+                        </div>
+                        <div class="space-y-1 text-slate-300">
+                            <p class="flex justify-between">
+                                <span class="text-slate-500">Materia:</span>
+                                <span class="font-medium text-slate-200" contenteditable="true"
+                                    >Tecnología de Audio</span
+                                >
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="text-slate-500">Fecha:</span>
+                                <span class="font-medium text-purple-300" contenteditable="true">2026-09-24</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="text-slate-500">Profesor:</span>
+                                <span class="font-medium text-slate-200" contenteditable="true">Cátedra de Sonido</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Navigation Buttons -->
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4 mt-4">
+                <button
+                    onclick="filterCategory('all')"
+                    id="tab-all"
+                    class="px-4 py-1.5 rounded-full text-xs font-orbitron tracking-wider transition-all bg-cyan-500/20 text-cyan-300 border border-cyan-400 shadow-neon-cyan"
+                >
+                    <i class="fa-solid fa-border-all mr-1"></i> TODOS
+                </button>
+                <button
+                    onclick="filterCategory('raw')"
+                    id="tab-raw"
+                    class="px-4 py-1.5 rounded-full text-xs font-orbitron tracking-wider transition-all bg-slate-900/80 text-slate-400 border border-slate-700 hover:border-cyan-500"
+                >
+                    <i class="fa-solid fa-microchip mr-1 text-cyan-400"></i> SIN COMPRESIÓN
+                </button>
+                <button
+                    onclick="filterCategory('lossy')"
+                    id="tab-lossy"
+                    class="px-4 py-1.5 rounded-full text-xs font-orbitron tracking-wider transition-all bg-slate-900/80 text-slate-400 border border-slate-700 hover:border-pink-500"
+                >
+                    <i class="fa-solid fa-compress mr-1 text-pink-400"></i> COMPRESIÓN CON PÉRDIDA
+                </button>
+                <button
+                    onclick="filterCategory('lossless')"
+                    id="tab-lossless"
+                    class="px-4 py-1.5 rounded-full text-xs font-orbitron tracking-wider transition-all bg-slate-900/80 text-slate-400 border border-slate-700 hover:border-purple-500"
+                >
+                    <i class="fa-solid fa-shield-halved mr-1 text-purple-400"></i> COMPRESIÓN SIN PÉRDIDA
+                </button>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto relative z-10 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- COLUMN 1: SIN COMPRESIÓN -->
+                <div id="col-raw" class="hud-card rounded-2xl p-5 relative overflow-hidden transition-all duration-500">
+                    <!-- Glowing corner marker -->
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-cyan-500/10 rounded-bl-full pointer-events-none"
+                    ></div>
+
+                    <!-- Section Header -->
+                    <div class="mb-5 border-b border-cyan-500/30 pb-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-orbitron text-cyan-400 tracking-widest uppercase"
+                                >Categoría 01</span
+                            >
+                            <span
+                                class="px-2 py-0.5 text-[10px] font-orbitron bg-cyan-950 text-cyan-300 border border-cyan-500/40 rounded"
+                                >RAW / PCM</span
+                            >
+                        </div>
+                        <h2 class="font-orbitron text-xl font-bold text-slate-100 mt-1 flex items-center gap-2">
+                            <i class="fa-solid fa-wave-square text-cyan-400"></i>
+                            SIN COMPRESIÓN
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-2 line-clamp-2">
+                            Representación digital directa por muestreo y cuantificación (PCM), guardando la onda
+                            capturada sin algoritmos de reducción.
+                        </p>
+                        <button
+                            onclick="openCategoryModal('raw')"
+                            class="mt-3 text-xs font-orbitron text-cyan-400 hover:text-cyan-200 flex items-center gap-1 transition-all"
+                        >
+                            <span>Ver teoría y características</span>
+                            <i class="fa-solid fa-circle-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Animated Waveform Visual Canvas -->
+                    <div class="bg-slate-950/80 rounded-xl p-3 border border-slate-800 mb-5 relative overflow-hidden">
+                        <div class="text-[10px] font-orbitron text-cyan-400/70 mb-1 flex justify-between">
+                            <span>ONDA ORIGINAL PCM</span>
+                            <span>100% FIDELIDAD</span>
+                        </div>
+                        <canvas id="canvas-raw" class="w-full h-16 rounded bg-slate-900/50"></canvas>
+                    </div>
+
+                    <!-- Audio Format Cards Inside Category -->
+                    <div class="space-y-3">
+                        <!-- WAV Card -->
+                        <div
+                            onclick="openFormatModal('wav')"
+                            class="bg-slate-900/70 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/60 rounded-xl p-3 cursor-pointer transition-all group"
+                        >
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3
+                                        class="font-orbitron font-bold text-slate-100 group-hover:text-cyan-300 flex items-center gap-2"
+                                    >
+                                        WAV
+                                        <span
+                                            class="text-[10px] font-normal px-1.5 py-0.2 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded"
+                                            >Estándar PC</span
+                                        >
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">Waveform Audio File Format</p>
+                                </div>
+                                <i
+                                    class="fa-solid fa-magnifying-glass-plus text-slate-600 group-hover:text-cyan-400 transition-colors mt-1"
+                                ></i>
+                            </div>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Sin pérdida</span
+                                >
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Estudio / Grabación</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- PCM Card -->
+                        <div
+                            onclick="openFormatModal('pcm')"
+                            class="bg-slate-900/70 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/60 rounded-xl p-3 cursor-pointer transition-all group"
+                        >
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3
+                                        class="font-orbitron font-bold text-slate-100 group-hover:text-cyan-300 flex items-center gap-2"
+                                    >
+                                        PCM / RAW
+                                        <span
+                                            class="text-[10px] font-normal px-1.5 py-0.2 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded"
+                                            >Base Digital</span
+                                        >
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">Pulse Code Modulation</p>
+                                </div>
+                                <i
+                                    class="fa-solid fa-magnifying-glass-plus text-slate-600 group-hover:text-cyan-400 transition-colors mt-1"
+                                ></i>
+                            </div>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Audio Crudo</span
+                                >
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >CD Audio / DSP</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- AIFF Card -->
+                        <div
+                            onclick="openFormatModal('aiff')"
+                            class="bg-slate-900/70 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/60 rounded-xl p-3 cursor-pointer transition-all group"
+                        >
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3
+                                        class="font-orbitron font-bold text-slate-100 group-hover:text-cyan-300 flex items-center gap-2"
+                                    >
+                                        AIFF
+                                        <span
+                                            class="text-[10px] font-normal px-1.5 py-0.2 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded"
+                                            >Apple Standard</span
+                                        >
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">Audio Interchange Format File</p>
+                                </div>
+                                <i
+                                    class="fa-solid fa-magnifying-glass-plus text-slate-600 group-hover:text-cyan-400 transition-colors mt-1"
+                                ></i>
+                            </div>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Sin Pérdida</span
+                                >
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >macOS / Pro Tools</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: CON COMPRESIÓN - CON PÉRDIDA -->
+                <div
+                    id="col-lossy"
+                    class="hud-card hud-card-purple rounded-2xl p-5 relative overflow-hidden transition-all duration-500"
+                >
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-pink-500/10 rounded-bl-full pointer-events-none"
+                    ></div>
+
+                    <!-- Section Header -->
+                    <div class="mb-5 border-b border-pink-500/30 pb-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-orbitron text-pink-400 tracking-widest uppercase"
+                                >Categoría 02</span
+                            >
+                            <span
+                                class="px-2 py-0.5 text-[10px] font-orbitron bg-pink-950 text-pink-300 border border-pink-500/40 rounded"
+                                >LOSSY</span
+                            >
+                        </div>
+                        <h2 class="font-orbitron text-xl font-bold text-slate-100 mt-1 flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-pink-400"></i>
+                            COMPRESIÓN CON PÉRDIDA
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-2 line-clamp-2">
+                            Elimina permanentemente datos inaudibles mediante modelos psicoacústicos para obtener máxima
+                            reducción de peso.
+                        </p>
+                        <button
+                            onclick="openCategoryModal('lossy')"
+                            class="mt-3 text-xs font-orbitron text-pink-400 hover:text-pink-200 flex items-center gap-1 transition-all"
+                        >
+                            <span>Ver teoría y características</span>
+                            <i class="fa-solid fa-circle-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Animated Waveform Visual Canvas -->
+                    <div class="bg-slate-950/80 rounded-xl p-3 border border-slate-800 mb-5 relative overflow-hidden">
+                        <div class="text-[10px] font-orbitron text-pink-400/70 mb-1 flex justify-between">
+                            <span>REDUCCIÓN PSICOACÚSTICA</span>
+                            <span>PESO REDUCIDO ~80%</span>
+                        </div>
+                        <canvas id="canvas-lossy" class="w-full h-16 rounded bg-slate-900/50"></canvas>
+                    </div>
+
+                    <!-- Audio Format Cards Inside Category -->
+                    <div class="space-y-3">
+                        <!-- MP3 Card -->
+                        <div
+                            onclick="openFormatModal('mp3')"
+                            class="bg-slate-900/70 hover:bg-slate-800/80 border border-slate-800 hover:border-pink-500/60 rounded-xl p-3 cursor-pointer transition-all group"
+                        >
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3
+                                        class="font-orbitron font-bold text-slate-100 group-hover:text-pink-300 flex items-center gap-2"
+                                    >
+                                        MP3
+                                        <span
+                                            class="text-[10px] font-normal px-1.5 py-0.2 bg-pink-500/10 text-pink-400 border border-pink-500/30 rounded"
+                                            >Universal</span
+                                        >
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">MPEG-1 Audio Layer III</p>
+                                </div>
+                                <i
+                                    class="fa-solid fa-magnifying-glass-plus text-slate-600 group-hover:text-pink-400 transition-colors mt-1"
+                                ></i>
+                            </div>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >128 - 320 kbps</span
+                                >
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Web / Streaming</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- AAC Card -->
+                        <div
+                            onclick="openFormatModal('aac')"
+                            class="bg-slate-900/70 hover:bg-slate-800/80 border border-slate-800 hover:border-pink-500/60 rounded-xl p-3 cursor-pointer transition-all group"
+                        >
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3
+                                        class="font-orbitron font-bold text-slate-100 group-hover:text-pink-300 flex items-center gap-2"
+                                    >
+                                        AAC
+                                        <span
+                                            class="text-[10px] font-normal px-1.5 py-0.2 bg-pink-500/10 text-pink-400 border border-pink-500/30 rounded"
+                                            >Alta Eficiencia</span
+                                        >
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">Advanced Audio Coding</p>
+                                </div>
+                                <i
+                                    class="fa-solid fa-magnifying-glass-plus text-slate-600 group-hover:text-pink-400 transition-colors mt-1"
+                                ></i>
+                            </div>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >YouTube / iTunes</span
+                                >
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Mejor que MP3</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- OGG Vorbis Card -->
+                        <div
+                            onclick="openFormatModal('ogg')"
+                            class="bg-slate-900/70 hover:bg-slate-800/80 border border-slate-800 hover:border-pink-500/60 rounded-xl p-3 cursor-pointer transition-all group"
+                        >
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3
+                                        class="font-orbitron font-bold text-slate-100 group-hover:text-pink-300 flex items-center gap-2"
+                                    >
+                                        OGG
+                                        <span
+                                            class="text-[10px] font-normal px-1.5 py-0.2 bg-pink-500/10 text-pink-400 border border-pink-500/30 rounded"
+                                            >Open Source</span
+                                        >
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">OGG Vorbis Container</p>
+                                </div>
+                                <i
+                                    class="fa-solid fa-magnifying-glass-plus text-slate-600 group-hover:text-pink-400 transition-colors mt-1"
+                                ></i>
+                            </div>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Spotify / Videojuegos</span
+                                >
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Libre de Patentes</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- WMA Card -->
+                        <div
+                            onclick="openFormatModal('wma')"
+                            class="bg-slate-900/70 hover:bg-slate-800/80 border border-slate-800 hover:border-pink-500/60 rounded-xl p-3 cursor-pointer transition-all group"
+                        >
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3
+                                        class="font-orbitron font-bold text-slate-100 group-hover:text-pink-300 flex items-center gap-2"
+                                    >
+                                        WMA
+                                        <span
+                                            class="text-[10px] font-normal px-1.5 py-0.2 bg-pink-500/10 text-pink-400 border border-pink-500/30 rounded"
+                                            >Microsoft</span
+                                        >
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">Windows Media Audio</p>
+                                </div>
+                                <i
+                                    class="fa-solid fa-magnifying-glass-plus text-slate-600 group-hover:text-pink-400 transition-colors mt-1"
+                                ></i>
+                            </div>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Propietario</span
+                                >
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Ecosistema Windows</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 3: CON COMPRESIÓN - SIN PÉRDIDA -->
+                <div
+                    id="col-lossless"
+                    class="hud-card hud-card-purple rounded-2xl p-5 relative overflow-hidden transition-all duration-500"
+                >
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-purple-500/10 rounded-bl-full pointer-events-none"
+                    ></div>
+
+                    <!-- Section Header -->
+                    <div class="mb-5 border-b border-purple-500/30 pb-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-orbitron text-purple-400 tracking-widest uppercase"
+                                >Categoría 03</span
+                            >
+                            <span
+                                class="px-2 py-0.5 text-[10px] font-orbitron bg-purple-950 text-purple-300 border border-purple-500/40 rounded"
+                                >LOSSLESS</span
+                            >
+                        </div>
+                        <h2 class="font-orbitron text-xl font-bold text-slate-100 mt-1 flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-purple-400"></i>
+                            COMPRESIÓN SIN PÉRDIDA
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-2 line-clamp-2">
+                            Reestructura la información binaria mediante algoritmos eficientes reduciendo el peso sin
+                            alterar la señal original.
+                        </p>
+                        <button
+                            onclick="openCategoryModal('lossless')"
+                            class="mt-3 text-xs font-orbitron text-purple-400 hover:text-purple-200 flex items-center gap-1 transition-all"
+                        >
+                            <span>Ver teoría y características</span>
+                            <i class="fa-solid fa-circle-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Animated Waveform Visual Canvas -->
+                    <div class="bg-slate-950/80 rounded-xl p-3 border border-slate-800 mb-5 relative overflow-hidden">
+                        <div class="text-[10px] font-orbitron text-purple-400/70 mb-1 flex justify-between">
+                            <span>EMPAQUETADO EFICIENTE</span>
+                            <span>REDUCCIÓN ~40-60%</span>
+                        </div>
+                        <canvas id="canvas-lossless" class="w-full h-16 rounded bg-slate-900/50"></canvas>
+                    </div>
+
+                    <!-- Audio Format Cards Inside Category -->
+                    <div class="space-y-3">
+                        <!-- FLAC Card -->
+                        <div
+                            onclick="openFormatModal('flac')"
+                            class="bg-slate-900/70 hover:bg-slate-800/80 border border-slate-800 hover:border-purple-500/60 rounded-xl p-3 cursor-pointer transition-all group"
+                        >
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3
+                                        class="font-orbitron font-bold text-slate-100 group-hover:text-purple-300 flex items-center gap-2"
+                                    >
+                                        FLAC
+                                        <span
+                                            class="text-[10px] font-normal px-1.5 py-0.2 bg-purple-500/10 text-purple-400 border border-purple-500/30 rounded"
+                                            >Estándar Audiófilo</span
+                                        >
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">Free Lossless Audio Codec</p>
+                                </div>
+                                <i
+                                    class="fa-solid fa-magnifying-glass-plus text-slate-600 group-hover:text-purple-400 transition-colors mt-1"
+                                ></i>
+                            </div>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Código Abierto</span
+                                >
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Hi-Res Audio</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- ALAC Card -->
+                        <div
+                            onclick="openFormatModal('alac')"
+                            class="bg-slate-900/70 hover:bg-slate-800/80 border border-slate-800 hover:border-purple-500/60 rounded-xl p-3 cursor-pointer transition-all group"
+                        >
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3
+                                        class="font-orbitron font-bold text-slate-100 group-hover:text-purple-300 flex items-center gap-2"
+                                    >
+                                        ALAC
+                                        <span
+                                            class="text-[10px] font-normal px-1.5 py-0.2 bg-purple-500/10 text-purple-400 border border-purple-500/30 rounded"
+                                            >Apple Lossless</span
+                                        >
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">Apple Lossless Audio Codec</p>
+                                </div>
+                                <i
+                                    class="fa-solid fa-magnifying-glass-plus text-slate-600 group-hover:text-purple-400 transition-colors mt-1"
+                                ></i>
+                            </div>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Apple Music</span
+                                >
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Contenedor M4A</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- APE Card -->
+                        <div
+                            onclick="openFormatModal('ape')"
+                            class="bg-slate-900/70 hover:bg-slate-800/80 border border-slate-800 hover:border-purple-500/60 rounded-xl p-3 cursor-pointer transition-all group"
+                        >
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3
+                                        class="font-orbitron font-bold text-slate-100 group-hover:text-purple-300 flex items-center gap-2"
+                                    >
+                                        APE
+                                        <span
+                                            class="text-[10px] font-normal px-1.5 py-0.2 bg-purple-500/10 text-purple-400 border border-purple-500/30 rounded"
+                                            >Monkey's Audio</span
+                                        >
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">Monkey's Audio Compression</p>
+                                </div>
+                                <i
+                                    class="fa-solid fa-magnifying-glass-plus text-slate-600 group-hover:text-purple-400 transition-colors mt-1"
+                                ></i>
+                            </div>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Alta Compresión</span
+                                >
+                                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-slate-400"
+                                    >Uso Intensivo CPU</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div
+            id="modal-backdrop"
+            class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity duration-300"
+        >
+            <div
+                class="hud-card max-w-2xl w-full rounded-2xl border border-cyan-500/50 p-6 relative overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto"
+            >
+                <!-- Close Button -->
+                <button
+                    onclick="closeModal()"
+                    class="absolute top-4 right-4 w-8 h-8 bg-slate-900 border border-slate-700 hover:border-cyan-400 rounded-full flex items-center justify-center text-slate-400 hover:text-cyan-300 transition-all"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <!-- Modal Content Header -->
+                <div class="flex items-center gap-3 mb-4">
+                    <div
+                        id="modal-icon"
+                        class="w-12 h-12 rounded-xl bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-xl font-bold font-orbitron"
+                    >
+                        <i class="fa-solid fa-compact-disc"></i>
+                    </div>
+                    <div>
+                        <span
+                            id="modal-badge"
+                            class="text-[10px] font-orbitron px-2 py-0.5 bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded"
+                            >FORMATO</span
+                        >
+                        <h3 id="modal-title" class="text-2xl font-orbitron font-bold text-slate-100">Título Formato</h3>
+                    </div>
+                </div>
+
+                <!-- Modal Body Info -->
+                <div class="space-y-4">
+                    <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+                        <h4 class="text-xs font-orbitron text-cyan-400 uppercase tracking-widest mb-1">
+                            Descripción General
+                        </h4>
+                        <p id="modal-description" class="text-sm text-slate-300 leading-relaxed">
+                            Descripción detallada del formato.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+                            <h4 class="text-xs font-orbitron text-purple-400 uppercase tracking-widest mb-2">
+                                Características Clave
+                            </h4>
+                            <ul id="modal-features" class="space-y-1.5 text-xs text-slate-300">
+                                <!-- JS Inject -->
+                            </ul>
+                        </div>
+
+                        <div
+                            class="bg-slate-950/60 p-4 rounded-xl border border-slate-800 flex flex-col justify-between"
+                        >
+                            <div>
+                                <h4 class="text-xs font-orbitron text-pink-400 uppercase tracking-widest mb-2">
+                                    Uso Recomendado
+                                </h4>
+                                <p id="modal-use" class="text-xs text-slate-300">Casos de uso típicos</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-800/80">
+                                <span class="text-[11px] text-slate-500 block mb-1"
+                                    >Tasa de Bits / Rango Frecuencia:</span
+                                >
+                                <span id="modal-specs" class="text-xs font-orbitron text-cyan-300">N/A</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audio Wave Visual Representation -->
+                    <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                        <div class="flex justify-between items-center mb-2 text-xs font-orbitron text-slate-400">
+                            <span>SIMULACIÓN DE ESPECTRO DE FRECUENCIA</span>
+                            <span id="modal-compression-ratio" class="text-cyan-400">Ratio: 1:1</span>
+                        </div>
+                        <canvas id="modal-canvas" class="w-full h-20 bg-slate-900/60 rounded"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Detailed data extracted directly from user notebooks and technical audio fundamentals
+            const categoryData = {
+                raw: {
+                    title: "Sin Compresión (RAW / PCM)",
+                    badge: "Captura Cruda",
+                    icon: "fa-solid fa-microchip",
+                    description:
+                        "Representación digital directa de una señal de audio analógica a través del proceso de muestreo y cuantificación (PCM), guardando la onda tal cual fue capturada sin aplicar ningún algoritmo de reducción de datos.",
+                    features: [
+                        "Preserva la totalidad de la información espectral y dinámica registrada.",
+                        "Genera archivos de gran tamaño con un peso constante.",
+                        "Nulo procesamiento de descompresión en reproducción.",
+                        "Estándar de referencia para grabación, mezcla y masterización.",
+                    ],
+                    use: "Estudios de grabación profesional, producción musical y preservación de archivos maestro.",
+                    specs: "44.1 kHz - 192 kHz / 16-bit - 32-bit float",
+                    ratio: "Sin reducción (100% Tamaño)",
+                },
+                lossy: {
+                    title: "Con Compresión - Con Pérdida (Lossy)",
+                    badge: "Modelos Psicoacústicos",
+                    icon: "fa-solid fa-bolt",
+                    description:
+                        "Proceso de compresión que elimina de forma permanente datos de audio considerados inaudibles o irrelevantes para el oído humano (enmascaramiento auditivo) para lograr la máxima reducción de tamaño posible.",
+                    features: [
+                        "Irreversibilidad: Datos descartados no se pueden recuperar.",
+                        "Degradación acumulativa al re-codificar o editar de nuevo.",
+                        "Archivos sumamente livianos ideales para redes.",
+                        "Tasa de bits (Bitrate) variable según configuración.",
+                    ],
+                    use: "Streaming en línea, podcasts, plataformas web y dispositivos portátiles con almacenamiento limitado.",
+                    specs: "64 kbps - 320 kbps CBR/VBR",
+                    ratio: "Reducción aproximada: 70% a 90%",
+                },
+                lossless: {
+                    title: "Con Compresión - Sin Pérdida (Lossless)",
+                    badge: "Empaquetado Reversible",
+                    icon: "fa-solid fa-shield-halved",
+                    description:
+                        "Proceso de compresión que reestructura la información binaria del audio mediante algoritmos de codificación eficientes para reducir su tamaño sin desechar ninguna señal de la onda sonora original.",
+                    features: [
+                        "Reversibilidad exacta: Flujo de datos 100% idéntico al original bit por bit.",
+                        "Fidelidad preservada al 100% sin degradación espectral.",
+                        "Permite realizar codificaciones y copias sin perder calidad.",
+                        "Ahorro moderado de espacio respecto al formato crudo.",
+                    ],
+                    use: "Colecciones de audiófilos, tiendas de música en alta resolución y respaldo seguro de discografías.",
+                    specs: "Hasta 192 kHz / 24-bit Hi-Res",
+                    ratio: "Reducción aproximada: 30% a 60%",
+                },
+            };
+
+            const formatData = {
+                wav: {
+                    title: "WAV (Waveform Audio File Format)",
+                    badge: "Sin Compresión",
+                    icon: "fa-solid fa-file-wave",
+                    description:
+                        "Desarrollado por Microsoft e IBM, es el contenedor estándar para audio PCM en Windows. Almacena muestras digitales sin compresión, garantizando la máxima calidad sonora.",
+                    features: [
+                        "Compatibilidad casi universal en software de edición.",
+                        "Soporta múltiples frecuencias de muestreo y profundidades de bit.",
+                        "Límite de tamaño clásico de archivo de 4 GB.",
+                    ],
+                    use: "Grabación en DAWs (Pro Tools, Ableton, Cubase) y masterización.",
+                    specs: "1411 kbps (16-bit / 44.1kHz Stereo)",
+                    ratio: "Tamaño completo (10 MB / min)",
+                },
+                pcm: {
+                    title: "PCM / RAW Audio",
+                    badge: "Código Puro",
+                    icon: "fa-solid fa-network-wired",
+                    description:
+                        "Modulación por Impulsos Codificados. Es el método estándar de digitalización del audio analógico mediante muestras de amplitud tomadas a intervalos regulares.",
+                    features: [
+                        "Sin encabezados ni metadata adicional en su estado RAW.",
+                        "Base técnica fundamental de CDs de audio y archivos WAV/AIFF.",
+                        "Respuesta de frecuencia y rango dinámico puros.",
+                    ],
+                    use: "Procesamiento interno de DSP, chips de audio hardware y discos Compact Disc Audio (CD-DA).",
+                    specs: "1411.2 kbps (Estándar Red Book)",
+                    ratio: "Sin compresión matemática",
+                },
+                aiff: {
+                    title: "AIFF (Audio Interchange Format)",
+                    badge: "Estándar Apple",
+                    icon: "fa-brands fa-apple",
+                    description:
+                        "Desarrollado por Apple Inc. basado en el formato IFF. Es el equivalente a WAV en el ecosistema Mac para almacenar datos PCM sin compresión.",
+                    features: [
+                        "Excelente integración con la arquitectura de macOS e iOS.",
+                        "Soporta metadata completa (etiquetas ID3 y marcadores).",
+                        "Calidad idéntica a la señal capturada.",
+                    ],
+                    use: "Producción musical en computadoras Mac y almacenamiento profesional de pistas sin pérdida.",
+                    specs: "1411 kbps - 4608 kbps (24-bit/96kHz)",
+                    ratio: "Sin reducción de tamaño",
+                },
+                mp3: {
+                    title: "MP3 (MPEG-1 Audio Layer III)",
+                    badge: "Lossy Universal",
+                    icon: "fa-solid fa-music",
+                    description:
+                        "Revolucionó la industria musical. Utiliza algoritmos psicoacústicos para descartar sonidos incomprobables por el oído humano cerca de frecuencias altas o sonidos fuertes.",
+                    features: [
+                        "Compatible con prácticamente el 100% de dispositivos del mercado.",
+                        "Permite tasas de bits desde 32 kbps hasta 320 kbps.",
+                        "Alta degradación si se vuelve a exportar repetidamente.",
+                    ],
+                    use: "Distribución general de música, reproducción en automóviles y dispositivos antiguos.",
+                    specs: "128 kbps - 320 kbps",
+                    ratio: "Compresión 10:1 (Aproximadamente 1 MB / min)",
+                },
+                aac: {
+                    title: "AAC (Advanced Audio Coding)",
+                    badge: "Lossy Moderno",
+                    icon: "fa-solid fa-[#00f0ff]",
+                    description:
+                        "Diseñado para ser el sucesor del MP3. Logra una mayor calidad de sonido que MP3 a la misma tasa de transferencia de datos gracias a filtros más eficientes.",
+                    features: [
+                        "Mejor manejo de frecuencias superiores a 16 kHz.",
+                        "Formato predeterminado para YouTube, Apple Music, iPhone y Bluetooth de alta fidelidad.",
+                        "Soporta hasta 48 canales de audio independientes.",
+                    ],
+                    use: "Transmisión de video web, servicios de streaming y dispositivos móviles modernos.",
+                    specs: "128 kbps - 256 kbps AAC-LC / HE-AAC",
+                    ratio: "Compresión superior con menor pérdida percibida",
+                },
+                ogg: {
+                    title: "OGG Vorbis",
+                    badge: "Lossy Open-Source",
+                    icon: "fa-solid fa-code",
+                    description:
+                        "Formato de contenedor abierto y libre de patentes desarrollado por la Fundación Xiph.Org. Muy popular por su flexibilidad y calidad a bitrates medios.",
+                    features: [
+                        "Libre de derechos y licencias comerciales.",
+                        "Estructura de bitrate variable (VBR) eficiente.",
+                        "Especialmente optimizado para transmisión continua.",
+                    ],
+                    use: "Plataformas como Spotify, motores de videojuegos (Unity/Unreal) y software libre.",
+                    specs: "96 kbps - 500 kbps (Q0 - Q10)",
+                    ratio: "Compresión ~8:1 a 12:1",
+                },
+                wma: {
+                    title: "WMA (Windows Media Audio)",
+                    badge: "Lossy Microsoft",
+                    icon: "fa-brands fa-windows",
+                    description:
+                        "Códec de audio propietario desarrollado por Microsoft para competir con MP3 y RealAudio en los inicios de la multimedia en PC.",
+                    features: [
+                        "Optimizada integración en el reproductor de Windows Media.",
+                        "Soporte nativo para protección de derechos digitales (DRM).",
+                        "Buena calidad a bitrates bajos de época (64 kbps).",
+                    ],
+                    use: "Archivos antiguos de librerías Windows y transmisiones en redes corporativas.",
+                    specs: "64 kbps - 192 kbps",
+                    ratio: "Compresión similar a MP3",
+                },
+                flac: {
+                    title: "FLAC (Free Lossless Audio Codec)",
+                    badge: "Lossless Abierto",
+                    icon: "fa-solid fa-gem",
+                    description:
+                        "El formato de compresión sin pérdida de información más extendido. Reduce el tamaño del archivo entre un 40% y 60% sin modificar ni un solo bit del audio original.",
+                    features: [
+                        "Código abierto y completamente gratuito.",
+                        "Recuperación exacta de la señal analógica muestreada.",
+                        "Soporta audio de alta resolución (Hi-Res) de hasta 32-bit/192kHz.",
+                    ],
+                    use: "Distribución de música en alta fidelidad (Bandcamp, Tidal) y digitalización de vinilos y CDs.",
+                    specs: "800 kbps - 3000 kbps (Variable)",
+                    ratio: "Reducción de peso: 50% vs WAV",
+                },
+                alac: {
+                    title: "ALAC (Apple Lossless Codec)",
+                    badge: "Lossless Apple",
+                    icon: "fa-brands fa-apple",
+                    description:
+                        "Desarrollado por Apple para ofrecer audio comprimido sin pérdida en sus dispositivos. Aunque inicialmente era cerrado, actualmente es de código abierto.",
+                    features: [
+                        "Usa extensión de archivo .m4a.",
+                        "Compatibilidad perfecta con iPhone, iPad, Mac y Apple Music Lossless.",
+                        "Descompresión muy rápida en procesadores móviles.",
+                    ],
+                    use: "Catálogo sin pérdida de Apple Music y bibliotecas musicales en macOS.",
+                    specs: "VBR dinámico según complejidad armónica",
+                    ratio: "Reducción de peso: 40% - 55%",
+                },
+                ape: {
+                    title: "APE (Monkey's Audio)",
+                    badge: "Lossless Alta Tasa",
+                    icon: "fa-solid fa-cube",
+                    description:
+                        "Un formato de compresión sin pérdida con ratios de reducción ligeramente superiores a FLAC, aunque requiere más recursos del procesador para decodificarse.",
+                    features: [
+                        "Mayor ratio de compresión en archivos musicales complejos.",
+                        "Mayor consumo de procesador en tiempo de reproducción.",
+                        "Menor compatibilidad en reproductores portátiles hardware.",
+                    ],
+                    use: "Almacenamiento de respaldos en PC de escritorio y compresión extrema sin pérdida.",
+                    specs: "Sintaxis de compresión simétrica",
+                    ratio: "Reducción de peso: 55% - 65%",
+                },
+            };
+
+            function filterCategory(cat) {
+                const cols = ["raw", "lossy", "lossless"];
+                const tabs = ["all", "raw", "lossy", "lossless"];
+
+                // Reset tabs styling
+                tabs.forEach((t) => {
+                    const btn = document.getElementById(`tab-${t}`);
+                    if (btn) {
+                        btn.className =
+                            "px-4 py-1.5 rounded-full text-xs font-orbitron tracking-wider transition-all bg-slate-900/80 text-slate-400 border border-slate-700 hover:border-cyan-500";
+                    }
+                });
+
+                // Highlight selected tab
+                const activeBtn = document.getElementById(`tab-${cat}`);
+                if (activeBtn) {
+                    activeBtn.className =
+                        "px-4 py-1.5 rounded-full text-xs font-orbitron tracking-wider transition-all bg-cyan-500/20 text-cyan-300 border border-cyan-400 shadow-neon-cyan";
+                }
+
+                // Show/Hide Grid columns
+                cols.forEach((c) => {
+                    const colEl = document.getElementById(`col-${c}`);
+                    if (cat === "all" || cat === c) {
+                        colEl.style.display = "block";
+                        colEl.classList.remove("opacity-20", "scale-95");
+                    } else {
+                        colEl.style.display = "none";
+                    }
+                });
+            }
+
+            function openCategoryModal(key) {
+                const data = categoryData[key];
+                if (!data) return;
+
+                document.getElementById("modal-icon").className =
+                    `w-12 h-12 rounded-xl bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-xl font-bold font-orbitron`;
+                document.getElementById("modal-icon").innerHTML = `<i class="${data.icon}"></i>`;
+                document.getElementById("modal-badge").innerText = data.badge;
+                document.getElementById("modal-title").innerText = data.title;
+                document.getElementById("modal-description").innerText = data.description;
+
+                const featuresContainer = document.getElementById("modal-features");
+                featuresContainer.innerHTML = data.features
+                    .map(
+                        (f) =>
+                            `<li class="flex items-start gap-2"><i class="fa-solid fa-caret-right text-cyan-400 mt-0.5"></i><span>${f}</span></li>`,
+                    )
+                    .join("");
+
+                document.getElementById("modal-use").innerText = data.use;
+                document.getElementById("modal-specs").innerText = data.specs;
+                document.getElementById("modal-compression-ratio").innerText = data.ratio;
+
+                document.getElementById("modal-backdrop").classList.remove("hidden");
+                drawModalWaveform(key);
+            }
+
+            function openFormatModal(key) {
+                const data = formatData[key];
+                if (!data) return;
+
+                document.getElementById("modal-icon").className =
+                    `w-12 h-12 rounded-xl bg-purple-950/60 border border-purple-500/40 flex items-center justify-center text-purple-400 text-xl font-bold font-orbitron`;
+                document.getElementById("modal-icon").innerHTML = `<i class="${data.icon}"></i>`;
+                document.getElementById("modal-badge").innerText = data.badge;
+                document.getElementById("modal-title").innerText = data.title;
+                document.getElementById("modal-description").innerText = data.description;
+
+                const featuresContainer = document.getElementById("modal-features");
+                featuresContainer.innerHTML = data.features
+                    .map(
+                        (f) =>
+                            `<li class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-purple-400 mt-0.5"></i><span>${f}</span></li>`,
+                    )
+                    .join("");
+
+                document.getElementById("modal-use").innerText = data.use;
+                document.getElementById("modal-specs").innerText = data.specs;
+                document.getElementById("modal-compression-ratio").innerText = data.ratio;
+
+                document.getElementById("modal-backdrop").classList.remove("hidden");
+                drawModalWaveform(key);
+            }
+
+            function closeModal() {
+                document.getElementById("modal-backdrop").classList.add("hidden");
+            }
+
+            let animFrameId;
+
+            function animateWaveforms() {
+                const time = Date.now() * 0.003;
+
+                // Render Canvas 1: RAW Waveform (Clean & Dense Sine)
+                const cRaw = document.getElementById("canvas-raw");
+                if (cRaw) {
+                    const ctx = cRaw.getContext("2d");
+                    cRaw.width = cRaw.offsetWidth;
+                    cRaw.height = cRaw.offsetHeight;
+                    ctx.clearRect(0, 0, cRaw.width, cRaw.height);
+                    ctx.beginPath();
+                    ctx.strokeStyle = "#00f0ff";
+                    ctx.lineWidth = 2;
+
+                    for (let x = 0; x < cRaw.width; x++) {
+                        const y = cRaw.height / 2 + Math.sin(x * 0.05 + time) * 18 * Math.cos(x * 0.01 + time * 0.5);
+                        if (x === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                }
+
+                // Render Canvas 2: Lossy Waveform (Quantized / Stepped)
+                const cLossy = document.getElementById("canvas-lossy");
+                if (cLossy) {
+                    const ctx = cLossy.getContext("2d");
+                    cLossy.width = cLossy.offsetWidth;
+                    cLossy.height = cLossy.offsetHeight;
+                    ctx.clearRect(0, 0, cLossy.width, cLossy.height);
+                    ctx.beginPath();
+                    ctx.strokeStyle = "#ff007f";
+                    ctx.lineWidth = 2;
+
+                    const step = 8;
+                    for (let x = 0; x < cLossy.width; x += step) {
+                        const rawY =
+                            cLossy.height / 2 + Math.sin(x * 0.05 + time) * 18 * Math.cos(x * 0.01 + time * 0.5);
+                        const quantizedY = Math.round(rawY / 6) * 6; // Stepped effect
+                        ctx.rect(x, quantizedY, step - 1, 3);
+                    }
+                    ctx.fillStyle = "#ff007f";
+                    ctx.fill();
+                }
+
+                // Render Canvas 3: Lossless Waveform (Slightly compressed packet blocks)
+                const cLossless = document.getElementById("canvas-lossless");
+                if (cLossless) {
+                    const ctx = cLossless.getContext("2d");
+                    cLossless.width = cLossless.offsetWidth;
+                    cLossless.height = cLossless.offsetHeight;
+                    ctx.clearRect(0, 0, cLossless.width, cLossless.height);
+
+                    ctx.fillStyle = "rgba(112, 0, 255, 0.6)";
+                    for (let x = 0; x < cLossless.width; x += 6) {
+                        const h =
+                            Math.abs(Math.sin(x * 0.04 + time) * Math.cos(x * 0.02 + time)) * (cLossless.height - 10);
+                        ctx.fillRect(x, (cLossless.height - h) / 2, 4, h);
+                    }
+                }
+
+                requestAnimationFrame(animateWaveforms);
+            }
+
+            // Draw waveform inside open Modal
+            function drawModalWaveform(type) {
+                const canvas = document.getElementById("modal-canvas");
+                if (!canvas) return;
+                const ctx = canvas.getContext("2d");
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#00f0ff";
+
+                const numBars = Math.floor(canvas.width / 5);
+                for (let i = 0; i < numBars; i++) {
+                    const height = Math.random() * (canvas.height - 10) + 5;
+                    ctx.fillRect(i * 5, (canvas.height - height) / 2, 3, height);
+                }
+            }
+
+            // Start animations on load
+            window.onload = function () {
+                animateWaveforms();
+            };
+
+            // Close modal on Escape key
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeModal();
+            });
+        </script>
+    </body>
+</html>
